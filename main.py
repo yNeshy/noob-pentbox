@@ -16,20 +16,20 @@ def hachage():
 
 def craquage():
     print("Available algorithms: ")
-    for algo in dictionnary_attack(None).supported_algorithms():
+    for algo in dictionnary_attack(None).supported_algorithms(): # i pass none cause idk how to use static methods in python
         print("* "+algo)
     
     algo_choice = inputs.input(message="Select algorithm to use: ", options=None)
-    
     attacker = dictionnary_attack(algo_choice)
-    hashed = inputs.input(message="Message to decrypt: ")
+    
+    if (attacker.issetup):
+        hashed = inputs.input(message="Message to decrypt: ")
     print()
     result = attacker.unhash(hashed)
     
     return result
-    
-    
 
+   
 def chiffrement_symetrique():
     print("chiffrement symetrique")
 
@@ -91,7 +91,7 @@ def main():
             print("Wrong input...")
             wrong = True
 
-    print("-----------Aziz Nechi & Ghaith Nabli-----------")
+    print("\n\n\t-----------Aziz Nechi & Ghaith Nabli-----------")
         
 
 if __name__ == "__main__":
