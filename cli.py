@@ -35,7 +35,7 @@ class CLIMenus:
             6: "Quitter"
         }
         self.__print__(items, title=title)
-        return self.inputClient.input(message="Choice", options=[str(i) for i in range(1,7)])
+        return self.inputClient.input(message="Choice: ", options=[str(i) for i in range(1,7)])
 
     # 1
     def codage_decodage_menu(self):
@@ -87,19 +87,17 @@ class CLInputs:
     def input(self, message="", options=None, formatting_dict=None):
         bad = True
         while(bad):
-            if(len(options) > 0):
-                print("Options are: "+str(options))
-            if( len(message) > 0):
-                print(message, end=": ")
-            input_x = input()
+            input_x = input(message)
             if(options):
                 if( str(input_x) in [str(_) for _ in options] ):
                     bad = False
                 else :
                     print("Wrong input.")
-                    
+            else:
+                bad = False
         if(formatting_dict):
             try:
+                bad = False
                 return formatting_dict[input_x]
             except :
                 print("Chosen option unavailable in provided dictionnary.\n{} not in {}").format(

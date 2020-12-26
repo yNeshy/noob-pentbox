@@ -1,7 +1,9 @@
 from cli import CLIMenus
+from cli import CLInputs
 from dictionnary_attack import dictionnary_attack
 
 menus = CLIMenus()
+inputs = CLInputs()
 
 def codage():
     print("codage")
@@ -13,8 +15,20 @@ def hachage():
     print("hachage")
 
 def craquage():
-    print("")
-    #dictionnary_attack()
+    print("Available algorithms: ")
+    for algo in dictionnary_attack(None).supported_algorithms():
+        print("* "+algo)
+    
+    algo_choice = inputs.input(message="Select algorithm to use: ", options=None)
+    
+    attacker = dictionnary_attack(algo_choice)
+    hashed = inputs.input(message="Message to decrypt: ")
+    print()
+    result = attacker.unhash(hashed)
+    
+    return result
+    
+    
 
 def chiffrement_symetrique():
     print("chiffrement symetrique")
@@ -55,9 +69,9 @@ def main():
         elif(_input=='4'):
             x = menus.chiffrement_Symetrique_menu()
             if(x=='a'):
-                chiffrement_symetrique
+                chiffrement_symetrique()
             elif(x=='b'):
-                dechiffrement_symetrique
+                dechiffrement_symetrique()
             else:
                 print("Wrong input...")
                 wrong = True
