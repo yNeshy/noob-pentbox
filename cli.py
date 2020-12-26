@@ -4,6 +4,8 @@ class CLIMenus:
     def __init__(self):
         self.previous = None
         self.menu = "{}\n\n{}\n\n"
+        self.inputClient = CLInputs()
+
     def __clear__(self):
         # for mac and linux
         if os.name == 'posix':
@@ -33,48 +35,69 @@ class CLIMenus:
             6: "Quitter"
         }
         self.__print__(items, title=title)
+        return self.inputClient.input(message="Choice", options=[str(i) for i in range(1,7)])
 
+    # 1
     def codage_decodage_menu(self):
-        title = "Chiffrement Symétrique"
+        title = "Codage - decodage"
         items = {
-            'a': "Codage: ",
-            'b': "Décodage:",   
+            'a': "Codage d'un message: ",
+            'b': "Décodage d'un message codé:",   
         }
         self.__print__(items, title=title)
+        return self.inputClient.input(message="Symetrique", options=['a', 'b'])
 
+    # 2
+    def hachage_message(self):
+        return 0
+
+    # 3
+    def craquage_message_hache(self):
+        return 0
+
+    # 4
     def chiffrement_Symetrique_menu(self):
         title = "Chiffrement Symétrique"
         items = {
-            1: "Chiffrer: ",
-            2: "Déchiffrer:",   
+            'a': "Chiffrer: ",
+            'b': "Déchiffrer:",   
         }
         self.__print__(items, title=title)
+        return self.inputClient.input(message="Symetrique", options=['a', 'b'])
 
+    # 5
     def chiffrement_Asymetrique_menu(self):
         title = "Chiffrement Asymétrique"
         items = {
-            1: "Chiffrer: ",
-            2: "Déchiffrer:",
+            'a': "Chiffrer: ",
+            'b': "Déchiffrer:",
         }
         self.__print__(items, title=title)
+        return self.inputClient.input(message="Asymetrique", options=['a', 'b'])
+
+    # 6 
+    def quitter(self):
+        return -1        
 
 
-class CLInput:
+class CLInputs:
     def __init__(self):
         pass
 
     def input(self, message="", options=None, formatting_dict=None):
         bad = True
         while(bad):
-            if(options):
+            if(len(options) > 0):
                 print("Options are: "+str(options))
-            input_x = input(message)
+            if( len(message) > 0):
+                print(message, end=": ")
+            input_x = input()
             if(options):
-                if(input_x in options):
+                if( str(input_x) in [str(_) for _ in options] ):
                     bad = False
                 else :
                     print("Wrong input.")
-        
+                    
         if(formatting_dict):
             try:
                 return formatting_dict[input_x]
@@ -83,3 +106,14 @@ class CLInput:
                     input_x, formatting_dict
                 )
                 return None 
+        else :
+            return str(input_x)
+
+
+if __name__ == "__main__":
+    menu = CLIMenus()
+    cli = CLInputs()
+
+    menu.main_menu()
+    x=cli.input(message="Choose:", options=[i for i in range(1,7)])
+    print(x)
