@@ -44,8 +44,6 @@ def dechiffrement_Asymetrique():
     print("dechiffrement asymetrique")
 
 
-
-
 def main():
     wrong = True
     while(wrong):
@@ -66,6 +64,7 @@ def main():
             hachage()
         elif(_input=='3'):
             craquage()
+
         elif(_input=='4'):
             x = menus.chiffrement_Symetrique_menu()
             if(x=='a'):
