@@ -2,6 +2,7 @@ import hashlib
 import json
 
 
+
 def write_md5():
     passwords = open("dictionnaries/samples/common1.txt",'r')
     md5 = open("dictionnaries/serialized_dictionnaries/md5.json", 'w')

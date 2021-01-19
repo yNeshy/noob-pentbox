@@ -50,7 +50,5 @@ in the CLIMenus class in cli.py, it's pretty intuitive.
 
 
 # Contact
-Aziz Nechi
-Ghaith Nabli
-newghaithofrome@gmail.com
-zizou.nechi@gmail.com
+#####Aziz Nechi: zizou.nechi@gmail.com
+#####Ghaith Nabli: newghaithofrome@gmail.com

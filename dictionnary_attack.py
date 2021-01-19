@@ -3,6 +3,27 @@ import json
 import glob
 
 
+
+## look I'm sorry, don't cringe. I didn't want a whole file for this, it's an academic project ok!
+def hash_message(message, alg):
+    """
+    Will hash message with alg (algorithm)
+    """
+    if not (alg in hashlib.algorithms_available) :
+        print("{} is not supported.".format(alg))
+        return 
+    
+    hasher = hashlib.new(alg)
+    hashed = ""
+    try:
+        hasher.update((bytes(message, encoding='utf-8')))
+        hashed = hasher.hexdigest()
+    except TypeError :
+        hasher.update((bytes(message, encoding='utf-8')))
+        hashed = hasher.hexdigest(0)
+    
+    return hashed
+
 class dictionnary_attack():
 
     def __init__(self, hashing_algorithm):

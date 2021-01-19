@@ -2,8 +2,9 @@ from Cli import CLIMenus
 from Cli import CLInputs
 from dictionnary_attack import dictionnary_attack
 from AlGamal import Algamal
-
-import process
+import b64 as base64
+from dictionnary_attack import hash_message
+import cipher
 
 menus = CLIMenus()
 inputs = CLInputs()
@@ -22,18 +23,24 @@ def load():
 
 
 def codage():
-    process.Coder().main()
+    base64.encode(inputs.input(message="Message à coder : ", options=None))
+    
 
 def decodage():
+    base64.decode(inputs.input(message="Message à décoder : ", options=None))
     
-    process.Decoder().main()
 
 def hachage():
     for algo in dictionnary_attack(None).supported_algorithms(): # i pass none cause idk how to use static methods in python
         print("* "+algo)
     
     algo_choice = inputs.input(message="Select algorithm to use: ", options=None)
-    process.Hash(algo_choice).main()
+    message = inputs.input(message="Message to hash: " , options=None)
+    hashed = hash_message(message, algo_choice)
+    print(hashed)
+    return hashed
+    
+    
 
 def craquage():
     print("Available algorithms: ")
@@ -45,17 +52,30 @@ def craquage():
     
     if (attacker.issetup):
         hashed = inputs.input(message="Message to decrypt: ")
-    print()
+    
     result = attacker.unhash(hashed)
     
     return result
 
 
 def chiffrement_symetrique():
-    print("chiffrement symetrique")
+    print("Using AES...")
+    key = inputs.input(message="Key ", max_len=64, min_len=16)
+    message = inputs.input(message="Message à encrypter: ")
+    result = cipher.AES_e(key).encrypt(message)
+    print("Crypté: "+str(result))
+    return result
+
+    
 
 def dechiffrement_symetrique():
-    print("dechiffrement symetrique")
+    print("Using AES...")
+    key = inputs.input(message="Key: ", max_len=64, min_len=16)
+    message = inputs.input(message="Message à décrypter: ")
+    result = cipher.AES_e(key).decrypt(message)
+    print("Décrypté: "+str(result))
+    return result
+
 
 
 def chiffrement_Asymetrique():
@@ -74,8 +94,8 @@ def chiffrement_Asymetrique():
     public_key = Algamal.find_public_key(bob)
     encrypted_message, message_key = alice.encrypt( message, public_key )
     output = ":".join([str(e) for e in encrypted_message])
-    
-    
+
+
     print("Message encrypté: " + output )
     print("Clé du message (p): " + str(message_key) )
 
@@ -166,10 +186,22 @@ def main():
             wrong = True
         
 
-    print("\n\n\t-----------Aziz Nechi & Ghaith Nabli-----------")
     return True
         
 
 if __name__ == "__main__":    
-    while(main()):
+    not_done = True
+    print("Press any button...")
+    while(not_done):
         input()
+        try:
+            not_done = main()
+            
+        except KeyboardInterrupt:
+            not_done = False
+        except Exception :
+            print("Please try again")
+            not_done = True
+        
+
+    print("\n\n\t-----------Aziz Nechi & Ghaith Nabli-----------\n")

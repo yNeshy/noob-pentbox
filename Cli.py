@@ -1,4 +1,5 @@
 import os
+from sys import maxsize as INF
 
 class CLIMenus:
     def __init__(self):
@@ -25,7 +26,7 @@ class CLIMenus:
 
 
     def main_menu(self):
-        title = "OUTIL DE CRYPTOGRAPHIE by AZIZ NECHI"
+        title = "--------------OUTIL DE CRYPTOGRAPHIE by AZIZ NECHI et GHAITH NABLI--------------"
         items = {
             1: "Codage et Décodage d'un message: ",
             2: "Hachage d'un message:",
@@ -84,7 +85,7 @@ class CLInputs:
     def __init__(self):
         pass
 
-    def input(self, message="", options=None, formatting_dict=None):
+    def input(self, message="", options=None, formatting_dict=None, max_len=INF, min_len=0):
         bad = True
         while(bad):
             input_x = input(message)
@@ -95,6 +96,14 @@ class CLInputs:
                     print("Wrong input.")
             else:
                 bad = False
+                if(len(input_x) > max_len):
+                    print("too long. (at most {} characters long)".format(max_len))
+                    bad = True
+                if(len(input_x) < min_len):
+                    print("too short. (at least {} characters long)".format(min_len))
+                    bad = True
+                
+            
         if(formatting_dict):
             try:
                 bad = False
