@@ -82,7 +82,7 @@ class Decoder(Process):
         n = len(self.message) % 8
         message=self.message + (' ' * (8-n))
         des = DES.new(bytes(key), DES.MODE_ECB)
-        encrypted_text = des.decrypt(message)
+        encrypted_text = des.decrypt(bytes(message))
         print(encrypted_text)
         return encrypted_text
         
@@ -94,10 +94,10 @@ class Decoder(Process):
                 break
             else:
                 print("key must be of length 16, 24, or 32 try again")
-        n = len(self.message) % 8
-        message=self.message + (' ' * (8-n))
+        n = len(self.message) % len(key)
+        message=self.message + (' ' * (len(key)-n))
         aes = AES.new(key, DES.MODE_ECB)
-        encrypted_text = aes.decrypt(message)
+        encrypted_text = aes.decrypt(bytes(message))
         print(encrypted_text)
         return encrypted_text
 
@@ -202,4 +202,4 @@ class Hash(Process):
 
 
 if __name__ == '__main__':
-    Coder().main()
+    Decoder().main()
