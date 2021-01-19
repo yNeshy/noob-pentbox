@@ -1,6 +1,7 @@
-from cli import CLIMenus
-from cli import CLInputs
+from Cli import CLIMenus
+from Cli import CLInputs
 from dictionnary_attack import dictionnary_attack
+from AlGamal import Algamal
 
 menus = CLIMenus()
 inputs = CLInputs()
@@ -29,7 +30,7 @@ def craquage():
     
     return result
 
-   
+
 def chiffrement_symetrique():
     print("chiffrement symetrique")
 
@@ -38,10 +39,53 @@ def dechiffrement_symetrique():
 
 
 def chiffrement_Asymetrique():
-    print("chiffrement asymetrique")
+    load = inputs.input(message="Charger personne? [y/n]", options=["y", "n"])
+    if(load == 'y'):
+        print("Choose user among: ")
+        for user in Algamal.get_saved_users():
+            print(user, end=' - ')
+        username = inputs.input(message="", options=Algamal.get_saved_users())
+    else:
+        username = None
+
+    alice = Algamal(name=username)
+    message = inputs.input(message="Message à crypter: ")
+    bob = inputs.input(message="Nom du destinataire: ")
+    public_key = Algamal.find_public_key(bob)
+ 
+
+    encrypted_message, message_key = alice.encrypt( message, public_key )
+    output = ":".join([str(e) for e in encrypted_message])
+    
+    
+    print("Message encrypté: " + output )
+    print("Clé du message (p): " + str(message_key) )
+
+    if(username==None):
+        if(inputs.input("Voulez vous sauvegarder cet utilisateur? [y/n]", options=['y', 'n']) == 'y'):
+            name=inputs.input(message="Nom du nouvel utilisateur: ")
+            alice.save(name)
+
+    return (encrypted_message, message_key)
+
 
 def dechiffrement_Asymetrique():
-    print("dechiffrement asymetrique")
+    load = inputs.input(message="Charger personne? [y/n]", options=["y", "n"])
+    if(load == 'y'):
+        print("Options: ")
+        for user in Algamal.get_saved_users():
+            print(user, end='\n')
+        username = inputs.input(message="   ", options=Algamal.get_saved_users())
+    else:
+        username = None
+
+    bob = Algamal(name=username)
+    message = [int(x) for x in inputs.input(message="Message à décrypter: ").split(':')]
+    print(message)
+    key = inputs.input(message="Clé du message (p): ")
+    message = bob.decrypt(message, key)
+    print("Message clair: "+message)
+
 
 
 def main():
@@ -77,9 +121,9 @@ def main():
         elif(_input=='5'):
             x = menus.chiffrement_Asymetrique_menu()
             if(x=='a'):
-                chiffrement_Asymetrique
+                chiffrement_Asymetrique()
             elif(x=='b'):
-                dechiffrement_Asymetrique
+                dechiffrement_Asymetrique()
             else:
                 print("Wrong input...")
                 wrong = True
@@ -95,3 +139,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+# 0:0:0:0
+# 1679234318600941505198094598312154865843919172829

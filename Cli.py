@@ -63,7 +63,7 @@ class CLIMenus:
             'b': "Déchiffrer:",   
         }
         self.__print__(items, title=title)
-        return self.inputClient.input(message="Symetrique", options=['a', 'b'])
+        return self.inputClient.input(message="", options=['a', 'b'])
 
     # 5
     def chiffrement_Asymetrique_menu(self):
@@ -73,7 +73,7 @@ class CLIMenus:
             'b': "Déchiffrer:",
         }
         self.__print__(items, title=title)
-        return self.inputClient.input(message="Asymetrique", options=['a', 'b'])
+        return self.inputClient.input(message="", options=['a', 'b'])
 
     # 6 
     def quitter(self):
