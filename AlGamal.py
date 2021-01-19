@@ -47,33 +47,25 @@ def power(a, b, c):
 	return x % c 
 
 # Asymmetric encryption 
-def alice_encrypt(msg, q, h, g): 
+def alice_encrypt(msg, q, h, g):   
     en_msg = [] 
-    k = gen_key(q)  # Private key for sender 
+  
+    k = gen_key(q)# Private key for sender 
     s = power(h, k, q) 
     p = power(g, k, q) 
-    
-    # copy basically
+      
     for i in range(0, len(msg)): 
         en_msg.append(msg[i]) 
   
     for i in range(0, len(en_msg)): 
-        en_msg[i] = s * ord(en_msg[i])
+        en_msg[i] = s * ord(en_msg[i]) 
   
-    return en_msg, p
-  
-def decrypt(en_msg, p, key, q): 
-    dr_msg = [] 
-    h = power(p, key, q) 
-    for i in range(0, len(en_msg)): 
-        dr_msg.append(chr(int(en_msg[i]/h))) 
-          
-    return dr_msg 
+    return en_msg, p 
   
 def bob_decrypt(en_msg, p, key, q): 
   
-    dr_msg = [] 
-    h = power(p, key, q) 
+    dr_msg = []
+    h = power(p, key, q)
     for i in range(0, len(en_msg)): 
         dr_msg.append(chr(int(en_msg[i]/h))) 
           
@@ -101,7 +93,7 @@ class Algamal():
     def load(self, name):
         try:
             with open(SOURCE_FOLDER+name+".key", 'r') as f :
-                data = f.readline()
+                data = f.readline().split(":")
                 self.__public_key__ = PublicKey(data[0], data[1], data[2])
                 self.__private_key__ = PrivateKey(data[3])
 
@@ -112,7 +104,7 @@ class Algamal():
     def save(self, name):
         try:
             with open(SOURCE_FOLDER+name+".key", 'wb') as f :
-                line = '{}:{}:{}:{}'.format(self.__public_key__.h, self.__public_key__.h, self.__public_key__.g, self.__private_key__.key)
+                line = '{}:{}:{}:{}'.format(self.__public_key__.h, self.__public_key__.q, self.__public_key__.g, self.__private_key__.key)
                 f.write(line.encode())
                 f.close
             
@@ -124,7 +116,7 @@ class Algamal():
         return alice_encrypt(message ,public_key.q, public_key.h, public_key.g)
 
     def decrypt(self, message, p):
-        return bob_decrypt(message, p, self.__private_key__.key, self.__public_key__.q )
+        return ''.join(bob_decrypt(message, p, self.__private_key__.key, self.__public_key__.q ))
 
     def get_public_key(self):
         return self.__public_key__
@@ -143,20 +135,18 @@ class Algamal():
             data = f.readline().split(':')
             return PublicKey(data[0], data[1], data[2])
 
-        
+    def __str__(self):
+        return "q:{}\nh:{}\ng:{}\nkey:{}".format(self.__public_key__.h, self.__public_key__.q, self.__public_key__.g, self.__private_key__.key)
 
 
 if __name__ == "__main__":
-    alice = Algamal()
-    bob = Algamal()
-    
-
-    bob.save("bob")
-
     bob = Algamal("bob")
+    alice = Algamal("alice")
+    
+    print(bob)
     alice_msg = "Pour etre franc, je ne comprend vraiment rien. chui tombé de la coline et j'ai de la colle sur lse main et des disques sur les doights, de gros disques sur mes doights je ne peux pas arreter."
     encrypted_message, pk = bob.encrypt(alice_msg, alice.get_public_key())
-    decr = ''.join(alice.decrypt(encrypted_message, pk))
+    decr = alice.decrypt(encrypted_message, pk)
     
     print(decr)
 

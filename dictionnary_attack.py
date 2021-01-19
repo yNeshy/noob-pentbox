@@ -40,7 +40,7 @@ class dictionnary_attack():
             print("FOUND:  {}".format(result))
 
         else:
-            print("{} not found. It is pretty secure.")
+            print("{} not found. It is pretty secure.".format(hashed))
             
         
         return result

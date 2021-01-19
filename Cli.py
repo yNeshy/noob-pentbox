@@ -45,7 +45,7 @@ class CLIMenus:
             'b': "Décodage d'un message codé:",   
         }
         self.__print__(items, title=title)
-        return self.inputClient.input(message="Symetrique", options=['a', 'b'])
+        return self.inputClient.input(message="", options=['a', 'b'])
 
     # 2
     def hachage_message(self):

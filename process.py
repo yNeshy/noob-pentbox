@@ -1,17 +1,22 @@
 from Crypto.Cipher import DES
 from Crypto.Cipher import AES
 import hashlib
+
+from Cli import CLInputs
+inputs = CLInputs()
+
 class Process():
     choices = {}
-    @abs
+    
     def Vigenère(self):
         pass
-    @abs
+    
     def DES(self):
         pass
-    @abs
+    
     def AES(self):
         pass
+
     def main(self):
         self.getChoice()
         self.getMessage()
@@ -26,7 +31,7 @@ class Process():
             self.AES()
 
     def getMessage(self):
-        print("enter the messege to be encrypted : \n")
+        print("enter the message to be encrypted : \n")
         self.message=input()
 
     def getChoice(self):
@@ -72,9 +77,11 @@ class Decoder(Process):
                 break
             else:
                 print("key must be of length 8 try again")
+        
+        self.message = bytes(self.message)
         n = len(self.message) % 8
         message=self.message + (' ' * (8-n))
-        des = DES.new(key, DES.MODE_ECB)
+        des = DES.new(bytes(key), DES.MODE_ECB)
         encrypted_text = des.decrypt(message)
         print(encrypted_text)
         return encrypted_text
@@ -93,7 +100,7 @@ class Decoder(Process):
         encrypted_text = aes.decrypt(message)
         print(encrypted_text)
         return encrypted_text
-        print()
+
 
 
 
@@ -132,6 +139,7 @@ class Coder(Process):
         message=self.message + (' ' * (8-n))
         des = DES.new(key, DES.MODE_ECB)
         encrypted_text = des.encrypt(message)
+        print(type(encrypted_text))
         print(encrypted_text)
         return encrypted_text
         
@@ -149,30 +157,49 @@ class Coder(Process):
         encrypted_text = aes.encrypt(message)
         print(encrypted_text)
         return encrypted_text
-        print()
+        
         
 
 
 class Hash(Process):
-    def __init__(self):
-        self.choices={
-            "1" : "md5",
-            "2" : "sha256",
-            "3" : "sha512",
-        }
-        self.choice="3"
+
+
+    def __init__(self, alg):
+        self.alg = alg
+
+    def getChoice(self):
+        pass
+
     def process(self):
-        if(self.choice=="1"):
-            hashed=hashlib.md5(str(self.message).encode('utf-8')).hexdigest()
-        elif(self.choice=="2"):
-            hashed=hashlib.sha256(str(self.message).encode('utf-8')).hexdigest()
-        elif(self.choice=="3"):
-            hashed=hashlib.sha512(str(self.message).encode('utf-8')).hexdigest()
+        hashed = Hash.write(self.alg, self.message)
         print(hashed)
+        return hashed
 
     def getMessage(self):
-        print("enter the messege to be hashed : \n")
+        print("enter the message to be hashed : \n")
         self.message=input()
 
+
+    @staticmethod
+    def write(alg, message):
+        if not (alg in hashlib.algorithms_available) :
+            print("{} does is not supported.".format(alg))
+            return 
+        
+        hasher = hashlib.new(alg)
+        hashed = ""
+        try:
+            hasher.update((bytes(message, encoding='utf-8')))
+            hashed = hasher.hexdigest()
+        except TypeError :
+            hasher.update((bytes(message, encoding='utf-8')))
+            hashed = hasher.hexdigest(0)
+        
+        return hashed
+        
+    
+
+
+
 if __name__ == '__main__':
-    Hash().main()
+    Coder().main()

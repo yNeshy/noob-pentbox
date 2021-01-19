@@ -40,3 +40,17 @@ in the CLIMenus class in cli.py, it's pretty intuitive.
 
 
 # noob-pentbox
+
+
+
+# Notes:
+
+### Keys are not encrypted when stored
+### Private keys SHOULD NOT be stored where they are. This is only for Demo purposes, if this was a real project to be used (or if you intend to make use of this tool) please consider moving the storage of private keys to a remote, safe storage provider.
+
+
+# Contact
+Aziz Nechi
+Ghaith Nabli
+newghaithofrome@gmail.com
+zizou.nechi@gmail.com

@@ -20,6 +20,7 @@ def read():
     md5 = open("dictionnaries/serialized_dictionnaries/md5.json", 'r')
     md5_dict = json.loads(md5.read())
     md5.close()
+    return md5_dict
 
 
 
@@ -31,19 +32,21 @@ def write(alg):
     file_name = "dictionnaries/serialized_dictionnaries/{}.json".format(alg)
     f = open(file_name, 'w')
     
-    hashed = hashlib.new(alg)
+    hasher = None
     algorithm_dict = {}
     for line in passwords :
         password = line.replace("\n","")
-        hashed.update(b"Nobody inspects the spammish repetition")
-        key = ""
+        hasher = hashlib.new(alg)
+        hashed = ""
         try:
-            key = hashed.hexdigest()
+            hasher.update((bytes(password, encoding='utf-8')))
+            hashed = hasher.hexdigest()
         except TypeError :
-           key = hashed.hexdigest(0)
-            
+            hasher.update((bytes(password, encoding='utf-8')))
+            hashed = hasher.hexdigest(0)
+        del hasher
 
-        algorithm_dict[key] = password
+        algorithm_dict[hashed] = password
 
     f.write(json.dumps(algorithm_dict))
     passwords.close()
