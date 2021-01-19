@@ -31,7 +31,7 @@ class Process():
             self.AES()
 
     def getMessage(self):
-        print("enter the message to be encrypted : \n")
+        print("enter the message : \n")
         self.message=input()
 
     def getChoice(self):
@@ -58,14 +58,19 @@ class Decoder(Process):
         }
         self.choice="3"
     def Vigenère(self):
-        print("enter the key : \n ")
-        key = input()
+        while(True):
+            try:
+                print("enter the key (must be a number): \n ")
+                key = input()
+                val = int(key)
+                break
+            except ValueError:
+                print("key must be a number")
         encrypted_text=""
         mult=(int)(len(self.message)/len(key))
         newKey=key * (mult+1)
-        newKey=newKey.upper()
         for i in range(0,len(self.message)):
-            encrypted_text=encrypted_text+chr( ord(self.message[i]) - ord(newKey[i]) -64 )
+            encrypted_text=encrypted_text+chr( ord(self.message[i]) - int(newKey[i])  )
         print(encrypted_text)
         return encrypted_text
 
@@ -116,14 +121,19 @@ class Coder(Process):
         }
         self.choice="3"
     def Vigenère(self):
-        print("enter the key : \n ")
-        key = input()
+        while(True):
+            try:
+                print("enter the key (must be a number): \n ")
+                key = input()
+                val = int(key)
+                break
+            except ValueError:
+                print("key must be a number")
         encrypted_text=""
         mult=(int)(len(self.message)/len(key))
         newKey=key * (mult+1)
-        newKey=newKey.upper()
         for i in range(0,len(self.message)):
-            encrypted_text=encrypted_text+chr( ord(self.message[i]) + ord(newKey[i]) -64 )
+            encrypted_text=encrypted_text+chr( ord(self.message[i]) + int(newKey[i])  )
         print(encrypted_text)
         return encrypted_text
 
@@ -199,7 +209,5 @@ class Hash(Process):
         
     
 
+Decoder().main()
 
-
-if __name__ == '__main__':
-    Decoder().main()
